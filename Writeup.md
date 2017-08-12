@@ -77,11 +77,11 @@ The project rubric is available below:
 <BR><BR>
 ---
 
-## Pipeline <a name="pl"></a> :
+## Detection Pipeline <a name="pl"></a> :
 
-###Histogram of Oriented Gradients (HOG)
+### Histogram of Oriented Gradients (HOG)
 
-####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
+#### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
 The code for this step is contained [here](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project.py#L363-L414).  
 
@@ -100,11 +100,11 @@ Example(s) of the `vehicle` class:
 
 I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
-####2. Explain how you settled on your final choice of HOG parameters.
+#### 2. Explain how you settled on your final choice of HOG parameters.
 
 I tried various combinations of parameters and this was a manual process. The results are summarized below. The term FP below means False Positive. These experiments were performed in [project_old.ipynb](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project.ipynb) and are summarized as the last cell of the above notebook.
 
-* Tweaked one parameter at a time, recorded the results and see which ones gives the best results. 
+* I tweaked one parameter at a time, recorded the results and see which ones gives the best results. 
     * Samples - Increased number of samples to 8000
     * Color Space :
         * All else being equal, HSV performed poorly relative to RGB in terms of false positives.
@@ -155,7 +155,7 @@ I tried various combinations of parameters and this was a manual process. The re
     * Only HoG Features On:
         * 4 FP. Also positive detection was not that strong.
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
 I trained a linear SVM using the following parameters:
 
@@ -172,43 +172,41 @@ I trained a linear SVM using the following parameters:
 
 The training was performed in [this](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/svm_train.py) file, and the resultant model(s) were saved [here](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/tree/master/project/model).
 
-###Sliding Window Search
-
-####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
+### Sliding Window Search
 
 I implemented the sliding window search [here](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project.py#L649-L718).
 
+Ultimately I searched on one scale using RGB 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.
+
 ![alt text][output_image1]
 
-####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
-
-Ultimately I searched on one scale using RGB 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here is an example images:
+Here is an example image of the bounding boxes.
 
 ![alt text][output_image5]
+
+<BR><BR>
 ---
 
-### Video Implementation <a name="vi"></a> :
-
-####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
+## Video Implementation <a name="vi"></a> :
 
 * Here is a link to the output from my pipeline on the [test video](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/test_video/output/test_video_output.mp4). Alternative Youtube link is [here](https://youtu.be/1VDsRGCD_1g).
+
 * Here is a link to the output from my pipeline on the [project video](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project_video/output/project_video_output.mp4) . Alternative Youtube link is [here](https://www.youtube.com/watch?v=SnXz4bTzu1c).
 
 
-####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
+* I implemented the false positive rejection [here](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project.py#L913-L1002). I essentially tracked the detection centroids of the past five frames, and then rejected the centroids which were not within a threshold range of the centroids detected for the past few frames.
 
-I implemented the false positive rejection [here](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project.py#L913-L1002). I essentially tracked the detection centroids of the past five frames, and then rejected the centroids which were not within a threshold range of the centroids detected for the past few frames.
-
-I performed duplicate detection rejection [here](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project.py#L1036-L1053). At the scale and window size at which I was searching, the detection filter was very sensitive, and would yield in many many good detections for genuine cars. At the same time, I did not want to hard-code a heat threshold since it could vary each frame. To make it dynamic, I detected the maximum heat intensity of a frame, and then applied a fraction to it [here](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project.py#L1045).
+* I performed duplicate detection rejection [here](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project.py#L1036-L1053). At the scale and window size at which I was searching, the detection filter was very sensitive, and would yield in many many good detections for genuine cars. At the same time, I did not want to hard-code a heat threshold since it could vary each frame. To make it dynamic, I detected the maximum heat intensity of a frame, and then applied a fraction to it [here](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project.py#L1045).
 
 
+<BR><BR>
 ---
 
-###Challenges and Comments <a name="chal"></a>:
+## Challenges and Comments <a name="chal"></a>:
 
-* The process of finding optimal detection parameters was very manual. I would like to find a better way to automate this process. One good aspect of this process was that it really drives home the point of feature engineering super aspects of neural network(s), as I reflect on the process of crafting the 8000 column+ feature vector for this project.
+* The process of finding optimal detection parameters was very manual. I would like to find a better way to automate this process. One good aspect of this process was that it really drives home the point of feature engineering capabilities of neural network(s), as I reflect on the process of crafting the 8000 column+ feature vector for this project.
 
-* Jupyter environment was dying easily when I tried to train the model with the entire set of available features ( length of a single feature > 8000 ), and when I tried to use all available samples. Therefore, for the longest time, I struggled with training the pipeline with the complete set of features and samples. This was resolved by migrating the training code to a Python pipeline. I have since made this my default workflow, as in, initial EDA ( exploratory data analysis ) and code validation in Jupyter for a small data set, and subsequent migration to a Python notebook when running the code on large scale data.
+* Jupyter environment was running out of memory easily when I tried to train the model with the entire set of available features ( length of a single feature > 8000 ), and when I tried to use all available samples. Therefore, for the longest time, I struggled with training the pipeline with the complete set of features and samples. This was resolved by migrating the training code to a Python pipeline. I have since made this my default workflow, as in, initial EDA ( exploratory data analysis ) and code validation in Jupyter for a small data set, and subsequent migration to a Python notebook when running the code on large scale data.
 
 * SVM model(s) train much faster than Neural Network(s) !
 
