@@ -42,6 +42,7 @@ const_data_split_seed = 42
 const_model_path = './model/model.pkl'
 const_persist_data = './model/persist_data_rgb.p'
 const_persist_data2 = './model/persist_data_rgb2.p'
+const_persist_data3 = './model/persist_data_rgb3.p'
 
 # Constants representing paths of test images
 const_test_straight1 = './test_images/input/straight_lines1.jpg'
@@ -438,7 +439,7 @@ print('Feature vector length:', len(X_train[0]))
 # svc = LinearSVC()
 
 # Load a pre-trained SVC model
-persist_data_dict = pickle.load( open(const_persist_data, "rb" ) )
+persist_data_dict = pickle.load( open(const_persist_data2, "rb" ) )
 svc = persist_data_dict["svc"]
 
 # Check the training time for the SVC
@@ -453,7 +454,7 @@ t=time.time()
 
 # Save to Pickle
 persist_data_dict = { "svc": svc, "scaler" : X_scaler, "orient" : orient, "pix_per_cell" : pix_per_cell, "cell_per_block" : cell_per_block, "spatial_size" : spatial_size, "hist_bins" : hist_bins, "color_space": color_space , "hog_channel" : hog_channel, "spatial_feat" : spatial_feat, "hist_feat" : hist_feat , "hog_feat" : hog_feat }
-pickle.dump( persist_data_dict, open( const_persist_data2, "wb" ) )
+pickle.dump( persist_data_dict, open( const_persist_data3, "wb" ) )
 
 
 # Load a test image

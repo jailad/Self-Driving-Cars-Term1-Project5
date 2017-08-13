@@ -52,7 +52,7 @@ The goals / steps of this project are the following:
 * [writeup.md](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/writeup.md) - Report writeup file.
 * [output_images folder](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/tree/master/project/output_images) - Folder with various images as generated from the pipeline.
 * [test_video](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/test_video/output/test_video_output.mp4) - Video of the output from the pipeline for the project video. Alternative Youtube link is [here](https://youtu.be/1VDsRGCD_1g).
-* [pipeline_video](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project_video/output/project_video_output.mp4) - Video of the output from the pipeline for the project video. Alternative Youtube link is [here](https://www.youtube.com/watch?v=SnXz4bTzu1c).
+* [pipeline_video](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project_video/output/project_video_output.mp4) - Video of the output from the pipeline for the project video. Alternative Youtube link is [here](https://youtu.be/ik_of0XFF1g).
 * [project.ipynb](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/blob/master/project/project.ipynb) - [Jupyter](http://jupyter.org/) notebook used to implement the pipeline.
 * [trained models](https://github.com/jailad/Self-Driving-Cars-Term1-Project5/tree/master/project/model) - Folder with a few trained Models which were generated from the training pipeline
 
